@@ -32,9 +32,11 @@ public class AwsS3CustomClient {
             s3Client.putObject(putObjectRequest, RequestBody.fromBytes(file.getBytes()));
             return getObjectUrl(bucketName, objectKey);
         } catch (SdkException ex) {
+            log.error(ex.getMessage());
             String errorMessage = String.format("Error creating object on bucket: %s with object key: %s", bucketName, objectKey);
             throw new RuntimeException(errorMessage);
         } catch (IOException ex) {
+            log.error(ex.getMessage());
             String errorMessage = String.format("IO error creating the object URL from bucket: %s and object key: %s", bucketName, objectKey);
             throw new RuntimeException(errorMessage);
         }
@@ -48,6 +50,7 @@ public class AwsS3CustomClient {
                     .build();
             return s3Client.utilities().getUrl(getUrlRequest).toString();
         } catch (SdkException ex) {
+            log.error(ex.getMessage());
             String errorMessage = String.format("Error getting the object URL from bucket: %s and object key: %s", bucketName, objectKey);
             throw new RuntimeException(errorMessage);
         }
