@@ -44,10 +44,10 @@ public class UserServiceImpl implements IUserService {
         checkIfRolesExists(user.getRoles());
         // Upload image storage service
         user.setPhotoName(generatePhotoName(file.getOriginalFilename()));
-        //user.setPhotoUrl(userStorage.uploadPhoto(user.getPhotoName(), file));
+        user.setPhotoUrl(userStorage.uploadPhoto(user.getPhotoName(), file));
         userRepository.create(user);
         // Send email notification
-        userEmailService.sendBasicEmail(user.getEmail(), "Bienvenido", "Te has registrado exitosamente!");
+        userEmailService.sendBasicEmail(user.getEmail(), "Welcome", "You has been successfully registered!");
     }
 
     @Override
