@@ -1,0 +1,26 @@
+application:
+  title: User Management API
+  version: 1.0.0
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password: 1234
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+
+  h2:
+    console:
+      enabled: true
+
+aws:
+  access:
+    key: test
+    secret: test
+  s3:
+    bucketName: test
+  ses:
+    from: bruferper@gmail.com

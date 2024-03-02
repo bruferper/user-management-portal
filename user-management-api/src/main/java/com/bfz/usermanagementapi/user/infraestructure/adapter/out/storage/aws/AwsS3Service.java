@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class AwsS3Service implements IUserStorage {
 
-    @Value("${aws.s3.user.profile.bucket}")
+    @Value("${aws.s3.bucketName}")
     private String userProfileBucket;
 
     private final AwsS3CustomClient s3CustomClient;

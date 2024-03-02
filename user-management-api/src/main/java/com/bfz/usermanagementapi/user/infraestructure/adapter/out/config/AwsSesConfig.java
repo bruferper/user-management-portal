@@ -7,14 +7,14 @@ import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.AwsCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.s3.S3Client;
+import software.amazon.awssdk.services.ses.SesClient;
 
 /**
  * @author bruferper
  */
 
 @Configuration
-public class AwsS3Config {
+public class AwsSesConfig {
 
     @Value("${aws.access.key}")
     private String accessKey;
@@ -23,10 +23,10 @@ public class AwsS3Config {
     private String secret;
 
     @Bean
-    public S3Client getS3Client() {
+    public SesClient getSesClient() {
         Region region = Region.SA_EAST_1;
         AwsCredentials credentials = AwsBasicCredentials.create(accessKey, secret);
-        return S3Client.builder()
+        return SesClient.builder()
                 .region(region)
                 .credentialsProvider(StaticCredentialsProvider.create(credentials))
                 .build();

@@ -2,6 +2,7 @@ package com.bfz.usermanagementapi.user.core.application.port.in.usecase;
 
 import com.bfz.usermanagementapi.role.core.application.port.in.usecase.IRoleService;
 import com.bfz.usermanagementapi.role.core.domain.model.Role;
+import com.bfz.usermanagementapi.user.core.application.port.out.IUserEmailService;
 import com.bfz.usermanagementapi.user.core.application.port.out.IUserRepository;
 import com.bfz.usermanagementapi.user.core.application.port.out.IUserStorage;
 import com.bfz.usermanagementapi.user.core.domain.exception.UserNotFoundException;
@@ -26,6 +27,7 @@ public class UserServiceImpl implements IUserService {
     private final IUserRepository userRepository;
     private final IRoleService roleService;
     private final IUserStorage userStorage;
+    private final IUserEmailService userEmailService;
 
     @Override
     public List<User> findAll() {
@@ -42,8 +44,10 @@ public class UserServiceImpl implements IUserService {
         checkIfRolesExists(user.getRoles());
         // Upload image storage service
         user.setPhotoName(generatePhotoName(file.getOriginalFilename()));
-        user.setPhotoUrl(userStorage.uploadPhoto(user.getPhotoName(), file));
+        //user.setPhotoUrl(userStorage.uploadPhoto(user.getPhotoName(), file));
         userRepository.create(user);
+        // Send email notification
+        userEmailService.sendBasicEmail(user.getEmail(), "Bienvenido", "Te has registrado exitosamente!");
     }
 
     @Override

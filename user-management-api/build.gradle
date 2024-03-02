@@ -29,6 +29,7 @@ dependencies {
 
 	implementation(platform("software.amazon.awssdk:bom:2.24.10"))
 	implementation("software.amazon.awssdk:s3")
+	implementation('software.amazon.awssdk:ses')
 
 	compileOnly 'org.projectlombok:lombok'
 
