@@ -1,5 +1,6 @@
 package com.bfz.usermanagementapi.role.core.application.port.in.usecase;
 
+import com.bfz.usermanagementapi.role.core.domain.model.Page;
 import com.bfz.usermanagementapi.role.core.domain.model.Role;
 
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.List;
 
 public interface IRoleService {
 
-    List<Role> findAll();
+    Page<List<Role>> findAll(int pageNo, int pageSize);
     Role findById(Integer id);
     void create(Role role);
     void update(Integer id, Role role);

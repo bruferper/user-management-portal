@@ -1,0 +1,13 @@
+@import url("assets/scss/vars.scss");
+@import url("assets/scss/components.scss");
+
+html, body, h1, h2, h3, h4, h5, p {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #DFDFDF;
+    font-family: sans-serif;
+}

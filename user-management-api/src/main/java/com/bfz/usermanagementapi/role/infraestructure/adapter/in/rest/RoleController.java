@@ -2,6 +2,9 @@ package com.bfz.usermanagementapi.role.infraestructure.adapter.in.rest;
 
 import com.bfz.usermanagementapi.common.dto.ApiResponseDto;
 import com.bfz.usermanagementapi.role.core.application.port.in.usecase.IRoleService;
+import com.bfz.usermanagementapi.role.core.domain.model.Page;
+import com.bfz.usermanagementapi.role.core.domain.model.Role;
+import com.bfz.usermanagementapi.role.infraestructure.adapter.in.rest.dto.PageResponseDto;
 import com.bfz.usermanagementapi.role.infraestructure.adapter.in.rest.dto.RoleRequestDto;
 import com.bfz.usermanagementapi.role.infraestructure.adapter.in.rest.dto.RoleResponseDto;
 import com.bfz.usermanagementapi.role.infraestructure.adapter.common.mapper.IRoleMapper;
@@ -19,22 +22,27 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/roles")
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:4200")
 public class RoleController {
 
     private final IRoleService roleService;
     private final IRoleMapper roleMapper;
 
     @GetMapping
-    public ResponseEntity<ApiResponseDto<List<RoleResponseDto>>> findAll() {
-        List<RoleResponseDto> roleResponseDtoList = roleService.findAll().stream()
-                .map(roleMapper::getRoleResponseDto).toList();
-        ApiResponseDto<List<RoleResponseDto>> response = ApiResponseDto.<List<RoleResponseDto>>builder()
-                .ok(true).message("Roles listed successfully").body(roleResponseDtoList).build();
+    public ResponseEntity<ApiResponseDto<PageResponseDto<List<RoleResponseDto>>>> findAll(
+            @RequestParam(value = "pageNo", required = false, defaultValue = "0") int pageNo,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "5") int pageSize
+    ) {
+        Page<List<Role>> rolePage = roleService.findAll(pageNo, pageSize);
+        PageResponseDto<List<RoleResponseDto>> pageResponseDto = roleMapper.getPageResponseDto(rolePage);
+
+        ApiResponseDto<PageResponseDto<List<RoleResponseDto>>> response = ApiResponseDto.<PageResponseDto<List<RoleResponseDto>>>builder()
+                .ok(true).message("Roles listed successfully").body(pageResponseDto).build();
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponseDto<RoleResponseDto>> findAll(@PathVariable("id") Integer id) {
+    public ResponseEntity<ApiResponseDto<RoleResponseDto>> findById(@PathVariable("id") Integer id) {
         RoleResponseDto responseDto = roleMapper.getRoleResponseDto(roleService.findById(id));
         ApiResponseDto<RoleResponseDto> response = ApiResponseDto.<RoleResponseDto>builder()
                 .ok(true).message("Role listed successfully").body(responseDto).build();

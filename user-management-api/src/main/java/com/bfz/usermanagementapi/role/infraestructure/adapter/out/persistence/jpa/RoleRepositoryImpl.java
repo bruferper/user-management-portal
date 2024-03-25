@@ -1,9 +1,12 @@
 package com.bfz.usermanagementapi.role.infraestructure.adapter.out.persistence.jpa;
 
 import com.bfz.usermanagementapi.role.core.application.port.out.IRoleRepository;
+import com.bfz.usermanagementapi.role.core.domain.model.Page;
 import com.bfz.usermanagementapi.role.core.domain.model.Role;
 import com.bfz.usermanagementapi.role.infraestructure.adapter.common.mapper.IRoleMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,8 +24,17 @@ public class RoleRepositoryImpl implements IRoleRepository {
     private final IRoleMapper roleMapper;
 
     @Override
-    public List<Role> findAll() {
-        return roleJpaRepository.findAll().stream().map(roleMapper::getRoleFromEntity).toList();
+    public Page<List<Role>> findAll(int pageNo, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        org.springframework.data.domain.Page<RoleEntity> pageEntity = roleJpaRepository.findAll(pageable);
+        List<Role> roleList = pageEntity.getContent().stream().map(roleMapper::getRoleFromEntity).toList();
+        return Page.<List<Role>>builder()
+                .pageNo(pageEntity.getNumber())
+                .pageSize(pageEntity.getSize())
+                .totalPages(pageEntity.getTotalPages())
+                .totalElements(pageEntity.getTotalElements())
+                .content(roleList)
+                .build();
     }
 
     @Override

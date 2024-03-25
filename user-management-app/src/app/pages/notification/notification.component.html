@@ -1,0 +1,4 @@
+<ng-container *ngIf="notificationService.getMessage() != ''">
+    <span style="color: green; margin-right: 5px;">{{ notificationService.getMessage() }}</span>
+    <button type="button" class="clear" (click)="notificationService.clearMessage()">Clear</button>
+</ng-container>
